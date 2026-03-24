@@ -316,7 +316,7 @@ body{font-family:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;background
       <div class="er-row" id="r-eb" style="display:none"><span>🔥 얼리버드 추가 (10%)</span><span style="color:var(--blue);font-weight:700" id="d-eb">—</span></div>
       <div class="er-row"><span>소계</span><span style="font-weight:700" id="d-sub">0원</span></div>
       <div class="er-sep"></div>
-      <div class="er-total"><span class="er-total-lbl">예상 합계</span><span class="er-total-amt" id="d-total">0원~</span></div>
+      <div class="er-total"><span class="er-total-lbl">할인가반영 견적</span><span class="er-total-note" id="d-note" style="display:none;font-size:11px;color:#e74c3c;font-weight:600;margin-left:6px"></span><span class="er-total-amt" id="d-total">0원~</span></div>
     </div>
 
     <div class="est-badge-wrap" id="badge-wrap" style="display:none">
@@ -473,9 +473,9 @@ function calc(){
   let base=0,tot=0;
   for(const k in CT){base+=PR[k]*CT[k];tot+=CT[k];}
   document.getElementById('d-sub').textContent=fmt(base);
-  if(tot===0){document.getElementById('d-total').textContent='0원~';['r-base','r-eb','badge-wrap','inq-box'].forEach(id=>{document.getElementById(id).style.display='none';});return;}
-  if(tot>=15){document.getElementById('d-total').textContent='별도 문의';['r-base','r-eb','badge-wrap'].forEach(id=>{document.getElementById(id).style.display='none';});document.getElementById('inq-box').style.display='block';return;}
-  document.getElementById('inq-box').style.display='none';
+  const noteEl=document.getElementById('d-note');
+  if(tot===0){document.getElementById('d-total').textContent='0원~';['r-base','r-eb','badge-wrap','inq-box'].forEach(id=>{document.getElementById(id).style.display='none';});if(noteEl)noteEl.style.display='none';return;}
+  if(tot>=15){document.getElementById('inq-box').style.display='block';if(noteEl){noteEl.textContent='(15대이상 추가할인 별도문의)';noteEl.style.display='inline';}}else{document.getElementById('inq-box').style.display='none';if(noteEl)noteEl.style.display='none';}
   const br=getBase(tot),eb=isEB()&&tot>=3,fr=br+(eb?.10:0);
   if(br>0){document.getElementById('l-base').textContent=`기본 할인 (${br*100}%)`;document.getElementById('d-base').textContent='−'+fmt(Math.round(base*br));document.getElementById('r-base').style.display='flex';}else{document.getElementById('r-base').style.display='none';}
   if(eb){document.getElementById('d-eb').textContent='−'+fmt(Math.round(base*.10));document.getElementById('r-eb').style.display='flex';}else{document.getElementById('r-eb').style.display='none';}
