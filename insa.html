@@ -73,16 +73,18 @@ body{font-family:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;background
 .eb-section{background:var(--bg)}
 .eb-wrap{max-width:1100px;margin:0 auto;padding:80px 24px}
 .eb-kicker{display:inline-flex;align-items:center;gap:6px;background:var(--blue-lt);border-radius:50px;padding:5px 14px;font-size:12px;font-weight:800;color:var(--blue);margin-bottom:14px}
-.discount-card{background:var(--white);border-radius:20px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;box-shadow:var(--shadow)}
-.dc-head{display:grid;grid-template-columns:1fr 1fr 1fr;padding:12px 20px;background:var(--bg);font-size:12px;font-weight:700;color:var(--text3);letter-spacing:.5px}
-.dc-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 20px;border-top:1px solid var(--border);align-items:center;transition:background .15s}
-.dc-row:hover{background:#fafbff}
-.dc-row.hot{background:linear-gradient(90deg,var(--blue-lt),var(--white))}
-.dc-cnt{font-size:14px;font-weight:700;color:var(--text)}
-.dc-base{font-size:13px;color:var(--text3)}
-.dc-final{font-size:15px;font-weight:900;color:var(--blue)}
-.dc-final.plain{color:var(--text3);font-size:13px;font-weight:400}
-.dc-eb{display:inline-block;background:var(--blue-lt);border-radius:6px;padding:2px 8px;font-size:14px;font-weight:900;color:var(--blue);margin-left:6px}
+.dc-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.dc-card{background:var(--white);border-radius:16px;border:1.5px solid var(--border);padding:16px 20px;display:flex;align-items:center;gap:12px;transition:all .2s}
+.dc-card.hot{border-color:#c5d5ff;background:linear-gradient(135deg,#f8faff,#eef3ff)}
+
+.dc-card-cnt{font-size:15px;font-weight:800;color:var(--text);min-width:72px}
+.dc-card-base{font-size:13px;color:var(--text3);min-width:72px}
+.dc-card-base strong{color:var(--text2)}
+.dc-card-arrow{font-size:14px;color:var(--blue);font-weight:700}
+.dc-card-final{font-size:14px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dc-card-final.plain{color:var(--text3);font-weight:400;font-size:13px}
+.dc-big{font-size:24px;font-weight:900;letter-spacing:-1px}
+.dc-eb-tag{display:inline-block;background:rgba(66,133,244,.1);border-radius:6px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--blue)}
 
 /* ESTIMATE CALC */
 .est-card{background:var(--white);border-radius:20px;border:1px solid var(--border);padding:28px 24px;box-shadow:var(--shadow)}
@@ -273,14 +275,40 @@ body{font-family:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;background
     <p class="desc fu" style="transition-delay:.1s;margin-bottom:28px">기본 대수 할인 + 얼리버드 추가 10%가 동시에 적용됩니다.</p>
   </div>
 
-  <div class="discount-card fu">
-    <div class="dc-head"><span>합산 대수</span><span>기본 할인</span><span>얼리버드 적용 시</span></div>
-    <div class="dc-row"><span class="dc-cnt">1 ~ 2대</span><span class="dc-base">없음</span><span class="dc-final plain">정가</span></div>
-    <div class="dc-row hot"><span class="dc-cnt">3 ~ 4대</span><span class="dc-base">5%</span><span class="dc-final">15% <span class="dc-eb">+10%</span></span></div>
-    <div class="dc-row hot"><span class="dc-cnt">5 ~ 6대</span><span class="dc-base">10%</span><span class="dc-final">20% <span class="dc-eb">+10%</span></span></div>
-    <div class="dc-row hot"><span class="dc-cnt">7 ~ 9대</span><span class="dc-base">15%</span><span class="dc-final">25% <span class="dc-eb">+10%</span></span></div>
-    <div class="dc-row hot"><span class="dc-cnt">10 ~ 14대</span><span class="dc-base">20%</span><span class="dc-final" style="white-space:nowrap">30% <span class="dc-eb">+10%</span></span></div>
-    <div class="dc-row"><span class="dc-cnt" style="color:var(--text3)">15대 이상</span><span class="dc-base">—</span><span class="dc-final plain">개별 협의</span></div>
+  <div class="dc-cards fu">
+    <div class="dc-card">
+      <div class="dc-card-cnt">1 ~ 2대</div>
+      <div class="dc-card-base">할인 없음</div>
+      <div class="dc-card-final plain">정가</div>
+    </div>
+    <div class="dc-card hot">
+      <div class="dc-card-cnt">3 ~ 4대</div>
+      <div class="dc-card-base">기본 <strong>5%</strong></div>
+      <div class="dc-card-arrow">→</div>
+      <div class="dc-card-final">총 <span class="dc-big">15</span>% <span class="dc-eb-tag">🔥 얼리버드 +10%</span></div>
+    </div>
+    <div class="dc-card hot">
+      <div class="dc-card-cnt">5 ~ 6대</div>
+      <div class="dc-card-base">기본 <strong>10%</strong></div>
+      <div class="dc-card-arrow">→</div>
+      <div class="dc-card-final">총 <span class="dc-big">20</span>% <span class="dc-eb-tag">🔥 얼리버드 +10%</span></div>
+    </div>
+    <div class="dc-card hot">
+      <div class="dc-card-cnt">7 ~ 9대</div>
+      <div class="dc-card-base">기본 <strong>15%</strong></div>
+      <div class="dc-card-arrow">→</div>
+      <div class="dc-card-final">총 <span class="dc-big">25</span>% <span class="dc-eb-tag">🔥 얼리버드 +10%</span></div>
+    </div>
+    <div class="dc-card hot">
+      <div class="dc-card-cnt">10 ~ 14대</div>
+      <div class="dc-card-base">기본 <strong>20%</strong></div>
+      <div class="dc-card-arrow">→</div>
+      <div class="dc-card-final">총 <span class="dc-big">30</span>% <span class="dc-eb-tag">🔥 얼리버드 +10%</span></div>
+    </div>
+    <div class="dc-card">
+      <div class="dc-card-cnt" style="color:var(--text3)">15대 이상</div>
+      <div class="dc-card-final plain">개별 협의</div>
+    </div>
   </div>
 
   <div class="est-card fu">
@@ -469,10 +497,12 @@ const CT={w:0,ss:0,sl:0,s1:0,s4:0};
 const isEB=()=>new Date()<=END;
 const fmt=n=>n.toLocaleString('ko-KR')+'원';
 function getBase(t){if(t>=10)return .20;if(t>=7)return .15;if(t>=5)return .10;if(t>=3)return .05;return 0;}
-function cc(k,d){const v=CT[k]+d;if(v<0||v>99)return;CT[k]=v;document.getElementById('v-'+k).textContent=v;document.getElementById('a-'+k).textContent=v>0?fmt(PR[k]*v):'—';calc();}
+function cc(k,d){const v=CT[k]+d;if(v<0||v>99)return;CT[k]=v;document.getElementById('v-'+k).textContent=v;calc();}
 function calc(){
   let base=0,tot=0;
   for(const k in CT){base+=PR[k]*CT[k];tot+=CT[k];}
+  const br2=getBase(tot),eb2=isEB()&&tot>=3,fr2=br2+(eb2?.10:0);
+  for(const k in CT){const v=CT[k];if(v>0){const orig=PR[k]*v;const disc=orig-Math.round(orig*fr2);document.getElementById('a-'+k).innerHTML=fr2>0?'<span style="text-decoration:line-through;color:var(--text3);font-size:11px">'+fmt(orig)+'</span><br><span style="color:var(--blue);font-weight:800">'+fmt(disc)+'</span>':fmt(orig);}else{document.getElementById('a-'+k).textContent='—';}}
   document.getElementById('d-sub').textContent=fmt(base);
   const noteEl=document.getElementById('d-note');
   if(tot===0){document.getElementById('d-total').textContent='0원~';['r-base','r-eb','badge-wrap','inq-box'].forEach(id=>{document.getElementById(id).style.display='none';});if(noteEl)noteEl.style.display='none';return;}
