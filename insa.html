@@ -91,8 +91,9 @@ body{font-family:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;background
 .ei:last-of-type{border-bottom:none}
 .ei-left{display:flex;align-items:center;gap:10px}
 .ei-emoji{font-size:20px;width:36px;height:36px;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ei-name{font-size:14px;font-weight:700;color:var(--text)}
-.ei-price{font-size:12px;color:var(--text3);margin-top:2px}
+.ei-info{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ei-name{font-size:16px;font-weight:800;color:var(--text)}
+.ei-price{font-size:13px;color:var(--text3)}
 .ei-stepper{display:flex;align-items:center;gap:8px}
 .ei-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);font-size:16px;font-weight:700;cursor:pointer;color:var(--blue);display:flex;align-items:center;justify-content:center;line-height:1;transition:all .15s}
 .ei-btn:hover{border-color:var(--blue);background:var(--blue-lt)}
@@ -286,27 +287,27 @@ body{font-family:'Pretendard',-apple-system,'Noto Sans KR',sans-serif;background
     <div class="est-top-label">기종별 대수 입력 <span style="font-size:11px;font-weight:400;color:var(--text3)">복수 선택 가능</span></div>
 
     <div class="ei">
-      <div class="ei-left"><div class="ei-emoji">🏠</div><div><div class="ei-name">벽걸이</div><div class="ei-price">65,000원/대</div></div></div>
+      <div class="ei-left"><div class="ei-emoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="28" height="28"><rect x="4" y="10" width="28" height="14" rx="3" fill="#e8f0fe" stroke="#4285f4" stroke-width="1.5"/><path d="M8 20h20" stroke="#4285f4" stroke-width="1" stroke-linecap="round" opacity=".5"/><path d="M10 24q6 4 16 0" stroke="#4285f4" stroke-width="1.2" fill="none" stroke-linecap="round"/><circle cx="26" cy="15" r="1.2" fill="#4285f4" opacity=".6"/></svg></div><div class="ei-info"><span class="ei-name">벽걸이</span><span class="ei-price">69,000원/대</span></div></div>
       <div class="ei-stepper"><button class="ei-btn" onclick="cc('w',-1)">−</button><div class="ei-val" id="v-w">0</div><button class="ei-btn" onclick="cc('w',1)">+</button></div>
       <div class="ei-amt" id="a-w">—</div>
     </div>
     <div class="ei">
-      <div class="ei-left"><div class="ei-emoji">🏢</div><div><div class="ei-name">스탠드 소형 <span style="font-size:11px;color:var(--text3)">16평↓</span></div><div class="ei-price">119,000원/대</div></div></div>
+      <div class="ei-left"><div class="ei-emoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="28" height="28"><rect x="11" y="3" width="14" height="30" rx="3" fill="#e8f0fe" stroke="#4285f4" stroke-width="1.5"/><rect x="14" y="6" width="8" height="4" rx="1" fill="#4285f4" opacity=".3"/><line x1="14" y1="14" x2="22" y2="14" stroke="#4285f4" stroke-width=".8" opacity=".4"/><line x1="14" y1="17" x2="22" y2="17" stroke="#4285f4" stroke-width=".8" opacity=".4"/><line x1="14" y1="20" x2="22" y2="20" stroke="#4285f4" stroke-width=".8" opacity=".4"/><circle cx="18" cy="28" r="1.5" fill="#4285f4" opacity=".4"/></svg></div><div class="ei-info"><span class="ei-name">스탠드 소형 <span style="font-size:12px;color:var(--text3)">16평↓</span></span><span class="ei-price">129,000원/대</span></div></div>
       <div class="ei-stepper"><button class="ei-btn" onclick="cc('ss',-1)">−</button><div class="ei-val" id="v-ss">0</div><button class="ei-btn" onclick="cc('ss',1)">+</button></div>
       <div class="ei-amt" id="a-ss">—</div>
     </div>
     <div class="ei">
-      <div class="ei-left"><div class="ei-emoji">🏣</div><div><div class="ei-name">스탠드 대형 <span style="font-size:11px;color:var(--text3)">17평↑</span></div><div class="ei-price">149,000원/대</div></div></div>
+      <div class="ei-left"><div class="ei-emoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="28" height="28"><rect x="9" y="2" width="18" height="32" rx="3" fill="#e8f0fe" stroke="#4285f4" stroke-width="1.5"/><rect x="12" y="5" width="12" height="5" rx="1" fill="#4285f4" opacity=".3"/><line x1="12" y1="14" x2="24" y2="14" stroke="#4285f4" stroke-width=".8" opacity=".4"/><line x1="12" y1="17" x2="24" y2="17" stroke="#4285f4" stroke-width=".8" opacity=".4"/><line x1="12" y1="20" x2="24" y2="20" stroke="#4285f4" stroke-width=".8" opacity=".4"/><line x1="12" y1="23" x2="24" y2="23" stroke="#4285f4" stroke-width=".8" opacity=".4"/><circle cx="18" cy="30" r="1.5" fill="#4285f4" opacity=".4"/></svg></div><div class="ei-info"><span class="ei-name">스탠드 대형 <span style="font-size:12px;color:var(--text3)">17평↑</span></span><span class="ei-price">149,000원/대</span></div></div>
       <div class="ei-stepper"><button class="ei-btn" onclick="cc('sl',-1)">−</button><div class="ei-val" id="v-sl">0</div><button class="ei-btn" onclick="cc('sl',1)">+</button></div>
       <div class="ei-amt" id="a-sl">—</div>
     </div>
     <div class="ei">
-      <div class="ei-left"><div class="ei-emoji">🏬</div><div><div class="ei-name">시스템 1WAY</div><div class="ei-price">95,000원/대</div></div></div>
+      <div class="ei-left"><div class="ei-emoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="28" height="28"><rect x="4" y="8" width="28" height="20" rx="3" fill="#e8f0fe" stroke="#4285f4" stroke-width="1.5"/><rect x="4" y="8" width="28" height="5" rx="3" fill="#4285f4" opacity=".15"/><line x1="8" y1="10.5" x2="28" y2="10.5" stroke="#4285f4" stroke-width=".7" opacity=".5"/><path d="M12 28l-2 4" stroke="#4285f4" stroke-width="1" stroke-linecap="round" opacity=".4"/><path d="M24 28l2 4" stroke="#4285f4" stroke-width="1" stroke-linecap="round" opacity=".4"/><rect x="14" y="17" width="8" height="5" rx="1" fill="#4285f4" opacity=".2"/><path d="M16 19.5h4" stroke="#4285f4" stroke-width="1" stroke-linecap="round"/></svg></div><div class="ei-info"><span class="ei-name">시스템 1WAY</span><span class="ei-price">99,000원/대</span></div></div>
       <div class="ei-stepper"><button class="ei-btn" onclick="cc('s1',-1)">−</button><div class="ei-val" id="v-s1">0</div><button class="ei-btn" onclick="cc('s1',1)">+</button></div>
       <div class="ei-amt" id="a-s1">—</div>
     </div>
     <div class="ei" style="border-bottom:none">
-      <div class="ei-left"><div class="ei-emoji">🔲</div><div><div class="ei-name">시스템 4WAY</div><div class="ei-price">125,000원/대</div></div></div>
+      <div class="ei-left"><div class="ei-emoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" width="28" height="28"><rect x="4" y="4" width="28" height="28" rx="3" fill="#e8f0fe" stroke="#4285f4" stroke-width="1.5"/><line x1="18" y1="4" x2="18" y2="32" stroke="#4285f4" stroke-width=".8" opacity=".3"/><line x1="4" y1="18" x2="32" y2="18" stroke="#4285f4" stroke-width=".8" opacity=".3"/><circle cx="18" cy="18" r="4" fill="#4285f4" opacity=".15" stroke="#4285f4" stroke-width="1"/><path d="M11 10l-3-3" stroke="#4285f4" stroke-width="1.2" stroke-linecap="round" opacity=".5"/><path d="M25 10l3-3" stroke="#4285f4" stroke-width="1.2" stroke-linecap="round" opacity=".5"/><path d="M11 26l-3 3" stroke="#4285f4" stroke-width="1.2" stroke-linecap="round" opacity=".5"/><path d="M25 26l3 3" stroke="#4285f4" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg></div><div class="ei-info"><span class="ei-name">시스템 4WAY</span><span class="ei-price">129,000원/대</span></div></div>
       <div class="ei-stepper"><button class="ei-btn" onclick="cc('s4',-1)">−</button><div class="ei-val" id="v-s4">0</div><button class="ei-btn" onclick="cc('s4',1)">+</button></div>
       <div class="ei-amt" id="a-s4">—</div>
     </div>
@@ -463,7 +464,7 @@ function tick(){
 setInterval(tick,1000);tick();
 
 // Estimate Calculator
-const PR={w:65000,ss:119000,sl:149000,s1:95000,s4:125000};
+const PR={w:69000,ss:129000,sl:149000,s1:99000,s4:129000};
 const CT={w:0,ss:0,sl:0,s1:0,s4:0};
 const isEB=()=>new Date()<=END;
 const fmt=n=>n.toLocaleString('ko-KR')+'원';
