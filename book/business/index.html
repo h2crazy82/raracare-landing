@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>깨끗한바람 - 사업장 견적문의</title>
+<style>
+  /* ── Reset & Base (실제 페이지 스타일 기반) ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    background: #f0f4ff;
+    color: #111827;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    padding: 32px 16px 16px;
+    position: relative;
+    width: 100%;
+    max-width: 512px;
+  }
+  .header .back-btn {
+    position: absolute;
+    left: 16px;
+    top: 36px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #6b7280;
+    cursor: pointer;
+  }
+  .header .page-title {
+    position: absolute;
+    right: 16px;
+    top: 40px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .logo-area svg { width: 64px; height: 64px; }
+  .logo-area .brand {
+    font-size: 28px;
+    font-weight: 900;
+    color: #1a4b8c;
+    letter-spacing: -1px;
+  }
+  .logo-area .sub {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  /* ── Form Container ── */
+  .form-wrap {
+    width: 100%;
+    max-width: 512px;
+    padding: 0 16px 40px;
+  }
+
+  /* ── Info Banner ── */
+  .info-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #e8f0fe;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.5;
+  }
+  .info-banner .icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #2962FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #2962FF;
+    margin-top: 1px;
+  }
+
+  /* ── Section Card ── */
+  .section-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 16px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .section-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 16px;
+  }
+
+  /* ── Form Fields ── */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4b5e78;
+    margin-bottom: 6px;
+  }
+  .field label .required {
+    color: #ef4444;
+    margin-left: 1px;
+  }
+  .field input[type="text"],
+  .field input[type="tel"],
+  .field input[type="email"],
+  .field input[type="number"],
+  .field input[type="date"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    height: 46px;
+    padding: 12px 16px;
+    border: 1px solid #dde3f0;
+    border-radius: 12px;
+    background: #f8f9fc;
+    font-size: 14px;
+    color: #111827;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: #2962FF;
+    background: #fff;
+  }
+  .field textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #9ca3af;
+  }
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6.5 6.5-6.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+  .field .unit-suffix {
+    position: relative;
+  }
+  .field .unit-suffix input {
+    padding-right: 40px;
+  }
+  .field .unit-suffix span {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #9ca3af;
+  }
+
+  /* ══════════════════════════════════════════
+     ★ 장비 유형별 수량 선택 UI (신규)
+     ══════════════════════════════════════════ */
+  .equipment-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px 16px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .equipment-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e3a5f;
+    margin-bottom: 6px;
+  }
+  .equipment-section .section-desc {
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 16px;
+  }
+
+  /* 장비 카운터 아이템 */
+  .equip-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f2f7;
+  }
+  .equip-item:last-of-type {
+    border-bottom: none;
+  }
+  .equip-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .equip-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+  }
+  .equip-desc {
+    font-size: 11px;
+    color: #9ca3af;
+  }
+
+  /* +/- 카운터 */
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #f8f9fc;
+    border: 1px solid #dde3f0;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 40px;
+  }
+  .counter button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 500;
+    color: #4b5e78;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .counter button:active {
+    background: #e8f0fe;
+  }
+  .counter button:disabled {
+    color: #d1d5db;
+    cursor: default;
+  }
+  .counter button:disabled:active {
+    background: transparent;
+  }
+  .counter .count-value {
+    width: 40px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    border-left: 1px solid #edf0f6;
+    border-right: 1px solid #edf0f6;
+    line-height: 40px;
+  }
+  .counter .count-value.has-value {
+    color: #2962FF;
+  }
+
+  /* 총 합계 바 */
+  .total-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: #eef2ff;
+    border-radius: 12px;
+    border: 1px solid #c7d6ff;
+  }
+  .total-bar .total-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #4b5e78;
+  }
+  .total-bar .total-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2962FF;
+  }
+  .total-bar .total-value span {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-left: 2px;
+  }
+
+  /* ── Submit ── */
+  .submit-btn {
+    width: 100%;
+    height: 56px;
+    border: none;
+    border-radius: 16px;
+    background: #2962FF;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 8px;
+  }
+  .submit-btn:hover { background: #1b4fd4; }
+  .submit-btn:active { background: #1543b5; }
+  .submit-btn:disabled {
+    background: #a0b4d6;
+    cursor: default;
+  }
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 12px;
+  }
+
+  /* ── 변경사항 하이라이트 (프로토타입 전용) ── */
+  .proto-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .proto-highlight {
+    position: relative;
+  }
+  .proto-highlight::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 2px dashed #f59e0b;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 540px) {
+    .form-wrap { padding: 0 12px 32px; }
+    .section-card, .equipment-section { padding: 16px 14px 20px; }
+    .equip-item { padding: 12px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <button class="back-btn">‹</button>
+  <span class="page-title">사업장 견적문의</span>
+  <div class="logo-area">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="45" r="28" stroke="#1a4b8c" stroke-width="5" fill="none"/>
+      <path d="M30 45 C30 45, 45 35, 50 45 C55 55, 70 45, 70 45" stroke="#1a4b8c" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+      <path d="M78 40 C82 38, 88 40, 90 36" stroke="#1a4b8c" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <circle cx="76" cy="28" r="2.5" fill="#1a4b8c"/>
+      <circle cx="84" cy="24" r="2" fill="#1a4b8c"/>
+    </svg>
+    <span class="brand">라라케어</span>
+    <span class="sub">에어컨 청소 견적문의</span>
+  </div>
+</div>
+
+<!-- Form -->
+<div class="form-wrap">
+
+  <!-- 안내 배너 -->
+  <div class="info-banner">
+    <div class="icon">i</div>
+    <div>아래 내용을 입력하시면 담당자가 확인 후 영업일 기준 1~2일 내 연락드립니다.</div>
+  </div>
+
+  <form id="bookingForm" onsubmit="handleSubmit(event)">
+
+    <!-- 사업장 정보 -->
+    <div class="section-card">
+      <h3>사업장 정보</h3>
+      <div class="field">
+        <label>사업장명 <span class="required">*</span></label>
+        <input type="text" name="businessName" placeholder="예) 맛있는 식당" required>
+      </div>
+      <div class="field">
+        <label>주소 <span class="required">*</span></label>
+        <input type="text" name="address" placeholder="예) 서울시 강남구 테헤란로 123" required>
+      </div>
+      <div class="field">
+        <label>사업장 유형 <span class="required">*</span></label>
+        <select name="businessType" required>
+          <option value="" disabled selected>유형 선택</option>
+          <option>사무실</option>
+          <option>공장</option>
+          <option>매장</option>
+          <option>음식점</option>
+          <option>기타</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 담당자 정보 -->
+    <div class="section-card">
+      <h3>담당자 정보</h3>
+      <div class="field">
+        <label>담당자명 <span class="required">*</span></label>
+        <input type="text" name="managerName" placeholder="예) 홍길동" required>
+      </div>
+      <div class="field">
+        <label>담당자 연락처 <span class="required">*</span></label>
+        <input type="tel" name="phone" placeholder="010-0000-0000" required>
+      </div>
+      <div class="field">
+        <label>내선번호</label>
+        <input type="text" name="extension" placeholder="예) 1234 (선택)">
+      </div>
+      <div class="field">
+        <label>이메일 주소</label>
+        <input type="email" name="email" placeholder="예) example@company.com (선택)">
+      </div>
+    </div>
+
+    <!-- ★ 장비 유형별 수량 선택 (변경 구간) -->
+    <div class="equipment-section proto-highlight">
+      <h3>에어컨 유형별 수량 <span class="required">*</span>
+        <span class="proto-badge">⭐ 변경 구간</span>
+      </h3>
+      <p class="section-desc">청소를 원하시는 에어컨 유형별 대수를 선택해주세요</p>
+
+      <!-- 벽걸이 -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">벽걸이</span>
+          <span class="equip-desc">가정·사무실용</span>
+        </div>
+        <div class="counter">
+          <button type="button" onclick="updateCount('wall', -1)" id="wall-minus" disabled>−</button>
+          <div class="count-value" id="wall-count">0</div>
+          <button type="button" onclick="updateCount('wall', 1)">+</button>
+        </div>
+      </div>
+
+      <!-- 스탠드 소형 -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">스탠드 소형</span>
+          <span class="equip-desc">16평 이하</span>
+        </div>
+        <div class="counter">
+          <button type="button" onclick="updateCount('stand_s', -1)" id="stand_s-minus" disabled>−</button>
+          <div class="count-value" id="stand_s-count">0</div>
+          <button type="button" onclick="updateCount('stand_s', 1)">+</button>
+        </div>
+      </div>
+
+      <!-- 스탠드 대형 -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">스탠드 대형</span>
+          <span class="equip-desc">17평 이상</span>
+        </div>
+        <div class="counter">
+          <button type="button" onclick="updateCount('stand_l', -1)" id="stand_l-minus" disabled>−</button>
+          <div class="count-value" id="stand_l-count">0</div>
+          <button type="button" onclick="updateCount('stand_l', 1)">+</button>
+        </div>
+      </div>
+
+      <!-- 시스템 1WAY -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">시스템 1WAY</span>
+          <span class="equip-desc">천장형 1방향</span>
+        </div>
+        <div class="counter">
+          <button type="button" onclick="updateCount('sys1', -1)" id="sys1-minus" disabled>−</button>
+          <div class="count-value" id="sys1-count">0</div>
+          <button type="button" onclick="updateCount('sys1', 1)">+</button>
+        </div>
+      </div>
+
+      <!-- 시스템 4WAY -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">시스템 4WAY</span>
+          <span class="equip-desc">천장형 4방향</span>
+        </div>
+        <div class="counter">
+          <button type="button" onclick="updateCount('sys4', -1)" id="sys4-minus" disabled>−</button>
+          <div class="count-value" id="sys4-count">0</div>
+          <button type="button" onclick="updateCount('sys4', 1)">+</button>
+        </div>
+      </div>
+
+      <!-- 총 합계 -->
+      <div class="total-bar">
+        <span class="total-label">청소 희망 총 대수</span>
+        <span class="total-value" id="total-units">0<span>대</span></span>
+      </div>
+
+      <!-- hidden fields for form data -->
+      <input type="hidden" name="wall" id="wall-input" value="0">
+      <input type="hidden" name="stand_s" id="stand_s-input" value="0">
+      <input type="hidden" name="stand_l" id="stand_l-input" value="0">
+      <input type="hidden" name="sys1" id="sys1-input" value="0">
+      <input type="hidden" name="sys4" id="sys4-input" value="0">
+    </div>
+
+    <!-- 일정 / 요청사항 -->
+    <div class="section-card">
+      <h3>희망 일정</h3>
+      <div class="field">
+        <label>청소 희망 날짜 1순위 <span class="required">*</span></label>
+        <input type="date" name="preferredDate1" required>
+      </div>
+      <div class="field">
+        <label>청소 희망 날짜 2순위</label>
+        <input type="date" name="preferredDate2">
+      </div>
+      <div class="field">
+        <label>요청사항 / 특이사항</label>
+        <textarea name="notes" placeholder="특이사항이나 요청하실 내용을 자유롭게 입력해주세요 (선택)"></textarea>
+      </div>
+    </div>
+
+    <!-- 제출 -->
+    <button type="submit" class="submit-btn" id="submitBtn">견적문의 신청하기</button>
+    <p class="footer-note">입력하신 정보는 견적문의 확인 목적으로만 사용됩니다</p>
+
+  </form>
+</div>
+
+<script>
+  // ── 장비 수량 상태 ──
+  const counts = { wall: 0, stand_s: 0, stand_l: 0, sys1: 0, sys4: 0 };
+
+  function updateCount(type, delta) {
+    const newVal = counts[type] + delta;
+    if (newVal < 0 || newVal > 99) return;
+    counts[type] = newVal;
+
+    // UI 업데이트
+    const countEl = document.getElementById(type + '-count');
+    const minusBtn = document.getElementById(type + '-minus');
+    const hiddenInput = document.getElementById(type + '-input');
+
+    countEl.textContent = newVal;
+    countEl.classList.toggle('has-value', newVal > 0);
+    minusBtn.disabled = newVal === 0;
+    hiddenInput.value = newVal;
+
+    // 총 합계 업데이트
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    document.getElementById('total-units').innerHTML = total + '<span>대</span>';
+  }
+
+  // ── 폼 제출 (프로토타입 — 실제로는 API 호출) ──
+  function handleSubmit(e) {
+    e.preventDefault();
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    if (total === 0) {
+      alert('에어컨 유형별 수량을 1대 이상 선택해주세요.');
+      return;
+    }
+
+    const fd = new FormData(e.target);
+    const data = Object.fromEntries(fd.entries());
+
+    console.log('=== 제출 데이터 ===');
+    console.log(JSON.stringify(data, null, 2));
+
+    // Google Sheet 컬럼 매핑 확인용
+    console.log('\n=== Google Sheet 매핑 ===');
+    console.log('B(사업장명):', data.businessName);
+    console.log('C(주소):', data.address);
+    console.log('D(사업장유형):', data.businessType);
+    console.log('E(담당자명):', data.managerName);
+    console.log('F(연락처):', data.phone);
+    console.log('G(내선번호):', data.extension);
+    console.log('H(이메일):', data.email);
+    console.log('I(벽걸이):', data.wall);
+    console.log('J(스탠드소형):', data.stand_s);
+    console.log('K(스탠드대형):', data.stand_l);
+    console.log('L(시스템1WAY):', data.sys1);
+    console.log('M(시스템4WAY):', data.sys4);
+    console.log('N(희망날짜1):', data.preferredDate1);
+    console.log('O(희망날짜2):', data.preferredDate2);
+    console.log('P(요청사항):', data.notes);
+    console.log('총 대수:', total);
+
+    alert('✅ 견적문의가 정상 제출되었습니다!\n\n'
+      + '벽걸이: ' + data.wall + '대\n'
+      + '스탠드 소형: ' + data.stand_s + '대\n'
+      + '스탠드 대형: ' + data.stand_l + '대\n'
+      + '시스템 1WAY: ' + data.sys1 + '대\n'
+      + '시스템 4WAY: ' + data.sys4 + '대\n'
+      + '────────────\n'
+      + '총 ' + total + '대\n\n'
+      + '(프로토타입 — 실제로는 Google Sheet에 기록됩니다)');
+  }
+</script>
+
+</body>
+</html>
