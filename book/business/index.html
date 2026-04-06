@@ -600,29 +600,29 @@
     btn.disabled = true;
     btn.textContent = '제출 중...';
 
-    // Google Sheet 컬럼 매핑 (A~R)
+    // Google Sheet 컬럼 매핑 — Apps Script doPost 필드명과 일치
     const payload = {
-      BIZ_NAME: data.businessName || '',
-      ADDRESS: data.address || '',
-      BIZ_TYPE: data.businessType || '',
-      MANAGER: data.managerName || '',
-      PHONE: data.phone || '',
-      EXTENSION: data.extension || '',
-      EMAIL: data.email || '',
-      WALL: data.wall || '0',
-      STAND_S: data.stand_s || '0',
-      STAND_L: data.stand_l || '0',
-      SYS_1WAY: data.sys1 || '0',
-      SYS_4WAY: data.sys4 || '0',
-      DATE_1: data.preferredDate1 || '',
-      DATE_2: data.preferredDate2 || '',
-      NOTES: data.notes || ''
+      businessName: data.businessName || '',
+      address: data.address || '',
+      businessType: data.businessType || '',
+      managerName: data.managerName || '',
+      phone: data.phone || '',
+      extension: data.extension || '',
+      email: data.email || '',
+      wall: parseInt(data.wall) || 0,
+      stand_s: parseInt(data.stand_s) || 0,
+      stand_l: parseInt(data.stand_l) || 0,
+      sys1: parseInt(data.sys1) || 0,
+      sys4: parseInt(data.sys4) || 0,
+      preferredDate1: data.preferredDate1 || '',
+      preferredDate2: data.preferredDate2 || '',
+      notes: data.notes || ''
     };
 
     fetch(WEBHOOK_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     })
     .then(() => {
