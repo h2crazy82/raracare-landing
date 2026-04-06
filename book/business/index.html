@@ -580,7 +580,10 @@
     document.getElementById('total-units').innerHTML = total + '<span>대</span>';
   }
 
-  // ── 폼 제출 (프로토타입 — 실제로는 API 호출) ──
+  // ── Google Apps Script 웹훅 URL ──
+  const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzm6nq2SNGmgbCWAGlK7dDRvhpeTy4j73XFqJZlOAym9pqWwtvlZDrNsEEAZoBljbd5rg/exec';
+
+  // ── 폼 제출 → Google Sheet 연동 ──
   function handleSubmit(e) {
     e.preventDefault();
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
@@ -592,37 +595,52 @@
     const fd = new FormData(e.target);
     const data = Object.fromEntries(fd.entries());
 
-    console.log('=== 제출 데이터 ===');
-    console.log(JSON.stringify(data, null, 2));
+    // 제출 버튼 비활성화
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
 
-    // Google Sheet 컬럼 매핑 확인용
-    console.log('\n=== Google Sheet 매핑 ===');
-    console.log('B(사업장명):', data.businessName);
-    console.log('C(주소):', data.address);
-    console.log('D(사업장유형):', data.businessType);
-    console.log('E(담당자명):', data.managerName);
-    console.log('F(연락처):', data.phone);
-    console.log('G(내선번호):', data.extension);
-    console.log('H(이메일):', data.email);
-    console.log('I(벽걸이):', data.wall);
-    console.log('J(스탠드소형):', data.stand_s);
-    console.log('K(스탠드대형):', data.stand_l);
-    console.log('L(시스템1WAY):', data.sys1);
-    console.log('M(시스템4WAY):', data.sys4);
-    console.log('N(희망날짜1):', data.preferredDate1);
-    console.log('O(희망날짜2):', data.preferredDate2);
-    console.log('P(요청사항):', data.notes);
-    console.log('총 대수:', total);
+    // Google Sheet 컬럼 매핑 (A~R)
+    const payload = {
+      BIZ_NAME: data.businessName || '',
+      ADDRESS: data.address || '',
+      BIZ_TYPE: data.businessType || '',
+      MANAGER: data.managerName || '',
+      PHONE: data.phone || '',
+      EXTENSION: data.extension || '',
+      EMAIL: data.email || '',
+      WALL: data.wall || '0',
+      STAND_S: data.stand_s || '0',
+      STAND_L: data.stand_l || '0',
+      SYS_1WAY: data.sys1 || '0',
+      SYS_4WAY: data.sys4 || '0',
+      DATE_1: data.preferredDate1 || '',
+      DATE_2: data.preferredDate2 || '',
+      NOTES: data.notes || ''
+    };
 
-    alert('✅ 견적문의가 정상 제출되었습니다!\n\n'
-      + '벽걸이: ' + data.wall + '대\n'
-      + '스탠드 소형: ' + data.stand_s + '대\n'
-      + '스탠드 대형: ' + data.stand_l + '대\n'
-      + '시스템 1WAY: ' + data.sys1 + '대\n'
-      + '시스템 4WAY: ' + data.sys4 + '대\n'
-      + '────────────\n'
-      + '총 ' + total + '대\n\n'
-      + '(프로토타입 — 실제로는 Google Sheet에 기록됩니다)');
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      alert('✅ 견적문의가 정상 제출되었습니다!\n\n담당자가 확인 후 영업일 기준 1~2일 내 연락드리겠습니다.');
+      e.target.reset();
+      Object.keys(counts).forEach(k => { counts[k] = 0; });
+      document.querySelectorAll('.count-value').forEach(el => { el.textContent = '0'; el.classList.remove('has-value'); });
+      document.querySelectorAll('.counter button:first-child').forEach(b => { b.disabled = true; });
+      updateTotal();
+    })
+    .catch(err => {
+      console.error('제출 오류:', err);
+      alert('제출 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.textContent = '견적문의 신청하기';
+    });
   }
 </script>
 
