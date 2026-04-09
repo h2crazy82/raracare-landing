@@ -274,7 +274,7 @@
     background: transparent;
   }
   .counter .count-value {
-    width: 40px;
+    width: 48px;
     text-align: center;
     font-size: 15px;
     font-weight: 600;
@@ -282,9 +282,29 @@
     border-left: 1px solid #edf0f6;
     border-right: 1px solid #edf0f6;
     line-height: 40px;
+    cursor: text;
+    position: relative;
   }
   .counter .count-value.has-value {
     color: #2962FF;
+  }
+  .counter .count-value input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #e8f0fe;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2962FF;
+    outline: none;
+    padding: 0;
+    -moz-appearance: textfield;
+  }
+  .counter .count-value input::-webkit-outer-spin-button,
+  .counter .count-value input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 
   /* 총 합계 바 */
@@ -432,7 +452,7 @@
         </div>
         <div class="counter">
           <button type="button" onclick="updateCount('wall', -1)" id="wall-minus" disabled>−</button>
-          <div class="count-value" id="wall-count">0</div>
+          <div class="count-value" id="wall-count" onclick="startEdit('wall')">0</div>
           <button type="button" onclick="updateCount('wall', 1)">+</button>
         </div>
       </div>
@@ -445,7 +465,7 @@
         </div>
         <div class="counter">
           <button type="button" onclick="updateCount('stand_s', -1)" id="stand_s-minus" disabled>−</button>
-          <div class="count-value" id="stand_s-count">0</div>
+          <div class="count-value" id="stand_s-count" onclick="startEdit('stand_s')">0</div>
           <button type="button" onclick="updateCount('stand_s', 1)">+</button>
         </div>
       </div>
@@ -458,7 +478,7 @@
         </div>
         <div class="counter">
           <button type="button" onclick="updateCount('stand_l', -1)" id="stand_l-minus" disabled>−</button>
-          <div class="count-value" id="stand_l-count">0</div>
+          <div class="count-value" id="stand_l-count" onclick="startEdit('stand_l')">0</div>
           <button type="button" onclick="updateCount('stand_l', 1)">+</button>
         </div>
       </div>
@@ -471,11 +491,23 @@
         </div>
         <div class="counter">
           <button type="button" onclick="updateCount('sys1', -1)" id="sys1-minus" disabled>−</button>
-          <div class="count-value" id="sys1-count">0</div>
+          <div class="count-value" id="sys1-count" onclick="startEdit('sys1')">0</div>
           <button type="button" onclick="updateCount('sys1', 1)">+</button>
         </div>
       </div>
 
+      <!-- 시스템 2WAY -->
+      <div class="equip-item">
+        <div class="equip-info">
+          <span class="equip-name">시스템 2WAY</span>
+          <span class="equip-desc">천장형 2방향</span>
+        </div>
+        <div class="equip-counter">
+          <button type="button" onclick="updateCount('sys2', -1)" id="sys2-minus" disabled>−</button>
+          <div class="count-value" id="sys2-count" onclick="startEdit('sys2')">0</div>
+          <button type="button" onclick="updateCount('sys2', 1)">+</button>
+        </div>
+      </div>
       <!-- 시스템 4WAY -->
       <div class="equip-item">
         <div class="equip-info">
@@ -484,7 +516,7 @@
         </div>
         <div class="counter">
           <button type="button" onclick="updateCount('sys4', -1)" id="sys4-minus" disabled>−</button>
-          <div class="count-value" id="sys4-count">0</div>
+          <div class="count-value" id="sys4-count" onclick="startEdit('sys4')">0</div>
           <button type="button" onclick="updateCount('sys4', 1)">+</button>
         </div>
       </div>
@@ -500,6 +532,7 @@
       <input type="hidden" name="stand_s" id="stand_s-input" value="0">
       <input type="hidden" name="stand_l" id="stand_l-input" value="0">
       <input type="hidden" name="sys1" id="sys1-input" value="0">
+      <input type="hidden" name="sys2" id="sys2-input" value="0">
       <input type="hidden" name="sys4" id="sys4-input" value="0">
     </div>
 
@@ -529,7 +562,7 @@
 
 <script>
   // ── 장비 수량 상태 ──
-  const counts = { wall: 0, stand_s: 0, stand_l: 0, sys1: 0, sys4: 0 };
+  const counts = { wall: 0, stand_s: 0, stand_l: 0, sys1: 0, sys2: 0, sys4: 0 };
 
   function updateCount(type, delta) {
     const newVal = counts[type] + delta;
@@ -555,8 +588,37 @@
     document.getElementById('total-units').innerHTML = total + '<span>대</span>';
   }
 
+  function startEdit(type) {
+    const el = document.getElementById(type + '-count');
+    if (el.querySelector('input')) return; // 이미 편집 중
+    const currentVal = counts[type];
+    el.innerHTML = '<input type="number" min="0" max="99" value="' + currentVal + '">';
+    const input = el.querySelector('input');
+    input.focus();
+    input.select();
+
+    function finishEdit() {
+      let val = parseInt(input.value, 10);
+      if (isNaN(val) || val < 0) val = 0;
+      if (val > 99) val = 99;
+      counts[type] = val;
+      el.textContent = val;
+      el.classList.toggle('has-value', val > 0);
+      el.setAttribute('onclick', "startEdit('" + type + "')");
+      document.getElementById(type + '-minus').disabled = val === 0;
+      document.getElementById(type + '-input').value = val;
+      updateTotal();
+    }
+
+    input.addEventListener('blur', finishEdit);
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      if (e.key === 'Escape') { input.value = currentVal; input.blur(); }
+    });
+  }
+
   // ── Google Apps Script 웹훅 URL ──
-  const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzm6nq2SNGmgbCWAGlK7dDRvhpeTy4j73XFqJZlOAym9pqWwtvlZDrNsEEAZoBljbd5rg/exec';
+  const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzEw6o6FmG7CI7lVs-iIu_QrG79PhxoQEQLZd0AHQ9YFDIX6ClbghUSK90cdcKk9TWUqQ/exec';
 
   // ── 폼 제출 → Google Sheet 연동 ──
   function handleSubmit(e) {
